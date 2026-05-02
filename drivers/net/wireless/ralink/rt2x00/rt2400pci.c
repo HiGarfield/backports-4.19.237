@@ -350,21 +350,21 @@ static void rt2400pci_config_erp(struct rt2x00_dev *rt2x00dev,
 		reg = rt2x00mmio_register_read(rt2x00dev, ARCSR3);
 		rt2x00_set_field32(&reg, ARCSR3_SIGNAL, 0x01 | preamble_mask);
 		rt2x00_set_field32(&reg, ARCSR3_SERVICE, 0x04);
-		rt2x00_set_field32(&reg, ARCSR2_LENGTH,
+		rt2x00_set_field32(&reg, ARCSR3_LENGTH,
 				   GET_DURATION(ACK_SIZE, 20));
 		rt2x00mmio_register_write(rt2x00dev, ARCSR3, reg);
 
 		reg = rt2x00mmio_register_read(rt2x00dev, ARCSR4);
 		rt2x00_set_field32(&reg, ARCSR4_SIGNAL, 0x02 | preamble_mask);
 		rt2x00_set_field32(&reg, ARCSR4_SERVICE, 0x04);
-		rt2x00_set_field32(&reg, ARCSR2_LENGTH,
+		rt2x00_set_field32(&reg, ARCSR4_LENGTH,
 				   GET_DURATION(ACK_SIZE, 55));
 		rt2x00mmio_register_write(rt2x00dev, ARCSR4, reg);
 
 		reg = rt2x00mmio_register_read(rt2x00dev, ARCSR5);
 		rt2x00_set_field32(&reg, ARCSR5_SIGNAL, 0x03 | preamble_mask);
 		rt2x00_set_field32(&reg, ARCSR5_SERVICE, 0x84);
-		rt2x00_set_field32(&reg, ARCSR2_LENGTH,
+		rt2x00_set_field32(&reg, ARCSR5_LENGTH,
 				   GET_DURATION(ACK_SIZE, 110));
 		rt2x00mmio_register_write(rt2x00dev, ARCSR5, reg);
 	}
