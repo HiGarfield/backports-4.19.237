@@ -962,7 +962,7 @@ static void rt73usb_link_tuner(struct rt2x00_dev *rt2x00dev,
 	/*
 	 * Special big-R17 for very short distance
 	 */
-	if (qual->rssi > -35) {
+	if (qual->rssi >= -35) {
 		rt73usb_set_vgc(rt2x00dev, qual, 0x60);
 		return;
 	}
