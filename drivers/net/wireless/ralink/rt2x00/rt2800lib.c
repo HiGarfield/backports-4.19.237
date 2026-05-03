@@ -2013,7 +2013,7 @@ void rt2800_pre_reset_hw(struct rt2x00_dev *rt2x00dev)
 	struct queue_entry *entry;
 	int i, wcid;
 
-	for (wcid = WCID_START; wcid < WCID_END; wcid++) {
+	for (wcid = WCID_START; wcid <= WCID_END; wcid++) {
 		drv_data->wcid_to_sta[wcid - WCID_START] = NULL;
 		__clear_bit(wcid - WCID_START, drv_data->sta_ids);
 	}
