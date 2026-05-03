@@ -11291,7 +11291,7 @@ static int rt2800_validate_eeprom(struct rt2x00_dev *rt2x00dev)
 					   default_lna_gain);
 		if (rt2x00_get_field16(word, EEPROM_EXT_LNA2_A2) == 0x00 ||
 		    rt2x00_get_field16(word, EEPROM_EXT_LNA2_A2) == 0xff)
-			rt2x00_set_field16(&word, EEPROM_EXT_LNA2_A1,
+			rt2x00_set_field16(&word, EEPROM_EXT_LNA2_A2,
 					   default_lna_gain);
 		rt2800_eeprom_write(rt2x00dev, EEPROM_EXT_LNA2, word);
 	}
