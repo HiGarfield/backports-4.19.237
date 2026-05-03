@@ -6444,10 +6444,10 @@ static int rt2800_init_registers(struct rt2x00_dev *rt2x00dev)
 	rt2800_register_write(rt2x00dev, LG_FBK_CFG0, reg);
 
 	reg = rt2800_register_read(rt2x00dev, LG_FBK_CFG1);
-	rt2x00_set_field32(&reg, LG_FBK_CFG0_CCKMCS0FBK, 0);
-	rt2x00_set_field32(&reg, LG_FBK_CFG0_CCKMCS1FBK, 0);
-	rt2x00_set_field32(&reg, LG_FBK_CFG0_CCKMCS2FBK, 1);
-	rt2x00_set_field32(&reg, LG_FBK_CFG0_CCKMCS3FBK, 2);
+	rt2x00_set_field32(&reg, LG_FBK_CFG1_CCKMCS0FBK, 0);
+	rt2x00_set_field32(&reg, LG_FBK_CFG1_CCKMCS1FBK, 0);
+	rt2x00_set_field32(&reg, LG_FBK_CFG1_CCKMCS2FBK, 1);
+	rt2x00_set_field32(&reg, LG_FBK_CFG1_CCKMCS3FBK, 2);
 	rt2800_register_write(rt2x00dev, LG_FBK_CFG1, reg);
 
 	/*
