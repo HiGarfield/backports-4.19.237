@@ -284,7 +284,7 @@ static int rt73usb_config_shared_key(struct rt2x00_dev *rt2x00dev,
 		 * shared keys, so put a mask over the allowed
 		 * entries.
 		 */
-		mask = (0xf << crypto->bssidx);
+		mask = (0xf << (4 * crypto->bssidx));
 
 		reg = rt2x00usb_register_read(rt2x00dev, SEC_CSR0);
 		reg &= mask;
