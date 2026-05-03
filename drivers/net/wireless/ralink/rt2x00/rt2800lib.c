@@ -3442,7 +3442,7 @@ static void rt2800_config_channel_rf3322(struct rt2x00_dev *rt2x00dev,
 
 	rt2800_rfcsr_write(rt2x00dev, 1, rfcsr);
 
-	rt2800_rfcsr_write(rt2x00dev, 31, 80);
+	rt2800_rfcsr_write(rt2x00dev, 31, 0x80);
 }
 
 static void rt2800_config_channel_rf53xx(struct rt2x00_dev *rt2x00dev,
