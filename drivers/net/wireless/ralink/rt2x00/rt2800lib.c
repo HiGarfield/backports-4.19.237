@@ -8690,7 +8690,7 @@ static void rt2800_r_calibration(struct rt2x00_dev *rt2x00dev)
 	int rcalcode;
 	u8 r_cal_code = 0;
 	s8 d1 = 0, d2 = 0;
-	u8 rfvalue;
+	u32 rfvalue;
 	u32 MAC_RF_BYPASS0, MAC_RF_CONTROL0, MAC_PWR_PIN_CFG;
 	u32 maccfg;
 
@@ -8728,7 +8728,7 @@ static void rt2800_r_calibration(struct rt2x00_dev *rt2x00dev)
 
 	rfvalue = (MAC_RF_BYPASS0 | 0x3004);
 	rt2800_register_write(rt2x00dev, RF_BYPASS0, rfvalue);
-	rfvalue = (MAC_RF_CONTROL0 | (~0x3002));
+	rfvalue = (MAC_RF_CONTROL0 & (~0x3002));
 	rt2800_register_write(rt2x00dev, RF_CONTROL0, rfvalue);
 
 	rt2800_rfcsr_write_bank(rt2x00dev, 5, 4, 0x27);
