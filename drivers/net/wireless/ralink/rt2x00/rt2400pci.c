@@ -1134,11 +1134,11 @@ static void rt2400pci_write_tx_desc(struct queue_entry *entry,
 	word = rt2x00_desc_read(txd, 4);
 	rt2x00_set_field32(&word, TXD_W4_PLCP_LENGTH_LOW,
 			   txdesc->u.plcp.length_low);
-	rt2x00_set_field32(&word, TXD_W3_PLCP_LENGTH_LOW_REGNUM, 8);
+	rt2x00_set_field32(&word, TXD_W3_PLCP_LENGTH_LOW_REGNUM, 7);
 	rt2x00_set_field32(&word, TXD_W3_PLCP_LENGTH_LOW_BUSY, 1);
 	rt2x00_set_field32(&word, TXD_W4_PLCP_LENGTH_HIGH,
 			   txdesc->u.plcp.length_high);
-	rt2x00_set_field32(&word, TXD_W3_PLCP_LENGTH_HIGH_REGNUM, 7);
+	rt2x00_set_field32(&word, TXD_W3_PLCP_LENGTH_HIGH_REGNUM, 8);
 	rt2x00_set_field32(&word, TXD_W3_PLCP_LENGTH_HIGH_BUSY, 1);
 	rt2x00_desc_write(txd, 4, word);
 
@@ -1191,10 +1191,6 @@ static void rt2400pci_write_beacon(struct queue_entry *entry,
 		rt2x00_err(rt2x00dev, "Fail to map beacon, aborting\n");
 		goto out;
 	}
-	/*
-	 * Enable beaconing again.
-	 */
-	rt2x00_set_field32(&reg, CSR14_BEACON_GEN, 1);
 	/*
 	 * Write the TX descriptor for the beacon.
 	 */
