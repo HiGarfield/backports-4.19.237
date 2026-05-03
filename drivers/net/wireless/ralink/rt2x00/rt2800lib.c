@@ -3132,7 +3132,7 @@ static void rt2800_config_channel_rf3053(struct rt2x00_dev *rt2x00dev,
 		rfcsr = 0x36;
 		if (txbf_enabled)
 			rt2x00_set_field8(&rfcsr, RFCSR39_RX_DIV, 1);
-		rt2800_rfcsr_write(rt2x00dev, 39, 0x36);
+		rt2800_rfcsr_write(rt2x00dev, 39, rfcsr);
 
 		rt2800_rfcsr_write(rt2x00dev, 45, 0xeb);
 	} else if (rf->channel >= 100 && rf->channel <= 128) {
