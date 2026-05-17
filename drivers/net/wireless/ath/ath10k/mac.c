@@ -4466,14 +4466,17 @@ static bool ath10k_check_chain_mask(struct ath10k *ar, u32 cm, const char *dbg)
 {
 	u32 valid_mask;
 
-	/* Build a mask of all bits that may be set, based on the number
-	 * of RF chains present.  Any bit above that indicates an invalid
-	 * or gap-filled chainmask that the firmware does not support.
+	/* num_rf_chains is set from firmware; if it has not been populated
+	 * yet skip the check rather than issuing a bogus rejection.
 	 */
-	if (ar->num_rf_chains)
-		valid_mask = (1 << ar->num_rf_chains) - 1;
-	else
-		valid_mask = 0xf; /* fall back to 4-chain maximum */
+	if (!ar->num_rf_chains)
+		return true;
+
+	/* Build a mask of all bits that may be set, based on the number
+	 * of RF chains present.  Any bit above that indicates a chainmask
+	 * that the firmware does not support.
+	 */
+	valid_mask = (1 << ar->num_rf_chains) - 1;
 
 	if ((cm & ~valid_mask) == 0)
 		return true;
