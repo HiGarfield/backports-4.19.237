@@ -827,8 +827,11 @@ static int ath9k_rx_skb_preprocess(struct ath_softc *sc,
 
 	/*
 	 * Discard zero-length packets and packets smaller than an ACK
+	 * which are not PHY_ERROR (short radar pulses have a length of 3)
 	 */
-	if (rx_stats->rs_datalen < 10) {
+	if (!rx_stats->rs_datalen ||
+	    (rx_stats->rs_datalen < 10 &&
+	     !(rx_stats->rs_status & ATH9K_RXERR_PHY))) {
 		RX_STAT_INC(rx_len_err);
 		goto corrupt;
 	}
