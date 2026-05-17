@@ -1125,7 +1125,9 @@ static void ath10k_process_rx(struct ath10k *ar, struct sk_buff *skb)
 
 	if (!(ar->filter_flags & FIF_FCSFAIL) &&
 	    status->flag & RX_FLAG_FAILED_FCS_CRC) {
+		spin_lock_bh(&ar->data_lock);
 		ar->stats.rx_crc_err_drop++;
+		spin_unlock_bh(&ar->data_lock);
 		dev_kfree_skb_any(skb);
 		return;
 	}

@@ -4464,15 +4464,22 @@ static int ath10k_get_antenna(struct ieee80211_hw *hw, u32 *tx_ant, u32 *rx_ant)
 
 static bool ath10k_check_chain_mask(struct ath10k *ar, u32 cm, const char *dbg)
 {
-	/* It is not clear that allowing gaps in chainmask
-	 * is helpful.  Probably it will not do what user
-	 * is hoping for, so warn in that case.
+	u32 valid_mask;
+
+	/* Build a mask of all bits that may be set, based on the number
+	 * of RF chains present.  Any bit above that indicates an invalid
+	 * or gap-filled chainmask that the firmware does not support.
 	 */
-	if (cm == 15 || cm == 7 || cm == 3 || cm == 1 || cm == 0)
+	if (ar->num_rf_chains)
+		valid_mask = (1 << ar->num_rf_chains) - 1;
+	else
+		valid_mask = 0xf; /* fall back to 4-chain maximum */
+
+	if ((cm & ~valid_mask) == 0)
 		return true;
 
-	ath10k_warn(ar, "mac %s antenna chainmask is invalid: 0x%x.  Suggested values: 15, 7, 3, 1 or 0.\n",
-		    dbg, cm);
+	ath10k_warn(ar, "mac %s antenna chainmask is invalid: 0x%x.  Valid chains: %u (mask 0x%x).\n",
+		    dbg, cm, ar->num_rf_chains, valid_mask);
 	return false;
 }
 
