@@ -4462,17 +4462,28 @@ static int ath10k_get_antenna(struct ieee80211_hw *hw, u32 *tx_ant, u32 *rx_ant)
 	return 0;
 }
 
-static void ath10k_check_chain_mask(struct ath10k *ar, u32 cm, const char *dbg)
+static bool ath10k_check_chain_mask(struct ath10k *ar, u32 cm, const char *dbg)
 {
-	/* It is not clear that allowing gaps in chainmask
-	 * is helpful.  Probably it will not do what user
-	 * is hoping for, so warn in that case.
-	 */
-	if (cm == 15 || cm == 7 || cm == 3 || cm == 1 || cm == 0)
-		return;
+	u32 valid_mask;
 
-	ath10k_warn(ar, "mac %s antenna chainmask may be invalid: 0x%x.  Suggested values: 15, 7, 3, 1 or 0.\n",
-		    dbg, cm);
+	/* num_rf_chains is set from firmware; if it has not been populated
+	 * yet skip the check rather than issuing a bogus rejection.
+	 */
+	if (!ar->num_rf_chains)
+		return true;
+
+	/* Build a mask of all bits that may be set, based on the number
+	 * of RF chains present.  Any bit above that indicates a chainmask
+	 * that the firmware does not support.
+	 */
+	valid_mask = (1 << ar->num_rf_chains) - 1;
+
+	if ((cm & ~valid_mask) == 0)
+		return true;
+
+	ath10k_warn(ar, "mac %s antenna chainmask is invalid: 0x%x.  Valid chains: %u (mask 0x%x).\n",
+		    dbg, cm, ar->num_rf_chains, valid_mask);
+	return false;
 }
 
 static int ath10k_mac_get_vht_cap_bf_sts(struct ath10k *ar)
@@ -4657,8 +4668,11 @@ static int __ath10k_set_antenna(struct ath10k *ar, u32 tx_ant, u32 rx_ant)
 
 	lockdep_assert_held(&ar->conf_mutex);
 
-	ath10k_check_chain_mask(ar, tx_ant, "tx");
-	ath10k_check_chain_mask(ar, rx_ant, "rx");
+	if (!ath10k_check_chain_mask(ar, tx_ant, "tx"))
+		return -EINVAL;
+
+	if (!ath10k_check_chain_mask(ar, rx_ant, "rx"))
+		return -EINVAL;
 
 	ar->cfg_tx_chainmask = tx_ant;
 	ar->cfg_rx_chainmask = rx_ant;
